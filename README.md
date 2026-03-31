@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 💰 Personal Expense Manager (Java + PostgreSQL)
 
 A desktop-based Personal Expense Manager built using Java Swing and PostgreSQL that helps users efficiently track, manage, and analyze their finances.
@@ -50,3 +51,6 @@ A desktop-based Personal Expense Manager built using Java Swing and PostgreSQL t
 ## 👨‍💻 Author
 
 Developed as a full-stack Java desktop application project focusing on real-world financial tracking and database integration.
+=======
+# Personal_Budget_Expense_System
+>>>>>>> 435fe252214305d23cb6fe62117c9320f9af5f03
