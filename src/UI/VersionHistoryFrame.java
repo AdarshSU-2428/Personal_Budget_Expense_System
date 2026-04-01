@@ -60,27 +60,6 @@ public class VersionHistoryFrame {
 
         headerPanel.add(titlePanel, BorderLayout.WEST);
 
-        // Info banner
-        JPanel infoBanner = new JPanel(new BorderLayout());
-        infoBanner.setBackground(new Color(214, 234, 248));
-        infoBanner.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(174, 214, 241)),
-                new EmptyBorder(12, 20, 12, 20)
-        ));
-
-        JLabel infoText = new JLabel("<html><b>How it works:</b> Every time you update a budget's planned amount, "
-                + "a PostgreSQL <b>trigger</b> automatically saves the old value to this version history table. "
-                + "This ensures full audit trail of all budget changes.</html>");
-        infoText.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        infoText.setForeground(TEXT_DARK);
-
-        JLabel infoIcon = new JLabel("[INFO] ");
-        infoIcon.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        infoIcon.setForeground(HISTORY_COLOR);
-
-        infoBanner.add(infoIcon, BorderLayout.WEST);
-        infoBanner.add(infoText, BorderLayout.CENTER);
-
         // Toolbar
         JPanel toolbarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         toolbarPanel.setBackground(BG);
@@ -120,7 +99,6 @@ public class VersionHistoryFrame {
         JPanel topSection = new JPanel(new BorderLayout(0, 10));
         topSection.setBackground(BG);
         topSection.add(headerPanel, BorderLayout.NORTH);
-        topSection.add(infoBanner, BorderLayout.CENTER);
         topSection.add(toolbarPanel, BorderLayout.SOUTH);
 
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
