@@ -302,6 +302,9 @@ public class DashboardFrame extends JFrame {
                 new LoginFrame();
             }
         } else {
+            if ("HOME".equals(command)) {
+            refreshHomePanel(); 
+            }
             contentCardLayout.show(contentPanel, command);
         }
     }
@@ -333,10 +336,14 @@ public class DashboardFrame extends JFrame {
 
     private int getTotalCategories() {
         try {
-            return db.CategoryService.getAllCategoryNames().size();
+            return db.CategoryService.getCategoryNamesByUser(userId).size();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
+    }
+    private void refreshHomePanel() {
+        contentPanel.remove(contentPanel.getComponent(0)); // remove old HOME
+        contentPanel.add(createHomePanel(), "HOME");       // add new updated HOME
     }
 }

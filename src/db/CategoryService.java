@@ -10,11 +10,13 @@ public class CategoryService {
     public static List<Object[]> getCategories(int userId) {
         List<Object[]> list = new ArrayList<>();
 
-        String query = "SELECT category_id, category_name FROM expense_categories";
+        String query = "SELECT category_id, category_name FROM expense_categories WHERE user_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
+            PreparedStatement ps = conn.prepareStatement(query)) {
+            
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 list.add(new Object[]{
@@ -22,6 +24,7 @@ public class CategoryService {
                         rs.getString("category_name")
                 });
             }
+             rs.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -30,15 +33,16 @@ public class CategoryService {
         return list;
     }
 
-    // ✅ GET ONLY CATEGORY NAMES (FOR DROPDOWN)
-    public static List<String> getAllCategoryNames() {
+    public static List<String> getCategoryNamesByUser(int userId) {
         List<String> list = new ArrayList<>();
 
-        String query = "SELECT category_name FROM expense_categories";
+        try (Connection conn = DBConnection.getConnection()) {
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
+            String sql = "SELECT category_name FROM expense_categories WHERE user_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 list.add(rs.getString("category_name"));
@@ -50,15 +54,15 @@ public class CategoryService {
 
         return list;
     }
-
     // ✅ ADD CATEGORY
     public static boolean addCategory(int userId, String name) {
-        String query = "INSERT INTO expense_categories (category_name) VALUES (?)";
+        String query = "INSERT INTO expense_categories (user_id, category_name, created_at) VALUES (?, ?, NOW())";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
 
-            ps.setString(1, name);
+            ps.setInt(1, userId);
+            ps.setString(2, name);
             return ps.executeUpdate() > 0;
 
         } catch (Exception e) {
@@ -84,13 +88,13 @@ public class CategoryService {
     }
 
     // ✅ GET CATEGORY ID BY NAME (VERY IMPORTANT)
-    public static int getCategoryIdByName(String name) {
-        String query = "SELECT category_id FROM expense_categories WHERE category_name = ?";
-
+    public static int getCategoryIdByName(int userId, String name) {
+        String query = "SELECT category_id FROM expense_categories WHERE user_id = ? AND category_name = ?";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
+            PreparedStatement ps = conn.prepareStatement(query)) {
 
-            ps.setString(1, name);
+            ps.setInt(1, userId);
+            ps.setString(2, name);
 
             ResultSet rs = ps.executeQuery();
 
@@ -101,7 +105,6 @@ public class CategoryService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return -1;
     }
 

@@ -85,7 +85,7 @@ public class ExpenseFrame {
         formPanel.add(createLabel("Category:"), gbc);
 
         gbc.gridx = 1;
-        List<String> categories = CategoryService.getAllCategoryNames();
+        List<String> categories = CategoryService.getCategoryNamesByUser(userId);
         categoryCombo = new JComboBox<>(categories.toArray(new String[0]));
         styleCombo(categoryCombo);
         formPanel.add(categoryCombo, gbc);
@@ -196,7 +196,7 @@ public class ExpenseFrame {
         try {
             double amount = Double.parseDouble(amountField.getText());
             String categoryName = categoryCombo.getSelectedItem().toString();
-            int categoryId = CategoryService.getCategoryIdByName(categoryName);
+            int categoryId = CategoryService.getCategoryIdByName(userId,categoryName);
 
             Date date = Date.valueOf(dateField.getText());
             String desc = descriptionField.getText();

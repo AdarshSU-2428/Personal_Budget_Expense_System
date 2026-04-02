@@ -87,7 +87,7 @@ public class BudgetFrame {
         gbc.gridx = 1;
 
         // ✅ FIX: load from DB
-        List<String> categories = CategoryService.getAllCategoryNames();
+        List<String> categories = CategoryService.getCategoryNamesByUser(userId);
         categoryCombo = new JComboBox<>(categories.toArray(new String[0]));
         categoryCombo.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         categoryCombo.setPreferredSize(new Dimension(180, 32));
@@ -184,6 +184,13 @@ public class BudgetFrame {
         centerPanel.add(scrollPane, BorderLayout.CENTER);
 
         panel.add(centerPanel, BorderLayout.CENTER);
+        panel.addComponentListener(new java.awt.event.ComponentAdapter() {
+        @Override
+        public void componentShown(java.awt.event.ComponentEvent e) {
+            refreshCategories();   // 🔥 reload combo
+            loadBudgetsFromDB();   // optional but recommended
+        }
+});
 
         return panel;
     }
@@ -199,7 +206,7 @@ public class BudgetFrame {
     private void addBudget() {
         try {
             String categoryName = categoryCombo.getSelectedItem().toString();
-            int categoryId = CategoryService.getCategoryIdByName(categoryName);
+            int categoryId = CategoryService.getCategoryIdByName(userId,categoryName);
 
             String month = monthCombo.getSelectedItem().toString();
             int year = Integer.parseInt(yearField.getText().trim());
@@ -230,7 +237,7 @@ public class BudgetFrame {
             int id = Integer.parseInt(tableModel.getValueAt(row, 0).toString());
 
             String categoryName = categoryCombo.getSelectedItem().toString();
-            int categoryId = CategoryService.getCategoryIdByName(categoryName);
+            int categoryId = CategoryService.getCategoryIdByName(userId,categoryName);
 
             String month = monthCombo.getSelectedItem().toString(); // ✅ correct
             int year = Integer.parseInt(yearField.getText().trim());
@@ -340,4 +347,19 @@ public class BudgetFrame {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
+    private void refreshCategories() {
+    String selected = (String) categoryCombo.getSelectedItem();
+
+    List<String> categories = CategoryService.getCategoryNamesByUser(userId);
+
+    categoryCombo.removeAllItems();
+
+    for (String cat : categories) {
+        categoryCombo.addItem(cat);
+    }
+
+    if (selected != null) {
+        categoryCombo.setSelectedItem(selected);
+    }
+}
 }
