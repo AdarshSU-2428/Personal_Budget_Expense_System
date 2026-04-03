@@ -237,7 +237,7 @@ public class BudgetFrame {
             int year = Integer.parseInt(yearField.getText().trim());
             double amount = Double.parseDouble(amountField.getText().trim());
 
-            System.out.println("Updating ID: " + id); // debug
+            System.out.println("Updating ID: " + id); 
 
             boolean success = BudgetService.updateBudget(id, categoryId, month, year, amount);
 
