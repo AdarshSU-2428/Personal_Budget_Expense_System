@@ -6,7 +6,6 @@ import java.util.List;
 
 public class ExpenseService {
 
-    // ✅ GET ALL EXPENSES FOR A USER
     public static List<Object[]> getExpenses(int userId) {
 
         List<Object[]> list = new ArrayList<>();
@@ -41,7 +40,6 @@ public class ExpenseService {
         return list;
     }
 
-    // ✅ ADD EXPENSE
     public static boolean addExpense(int userId, int categoryId,
                                     double amount, Date date, String description) {
 
@@ -66,7 +64,6 @@ public class ExpenseService {
         }
     }
 
-    // ✅ UPDATE EXPENSE
     public static boolean updateExpense(int expenseId, int categoryId,
                                         double amount, Date date, String description) {
 
@@ -91,7 +88,6 @@ public class ExpenseService {
         }
     }
 
-    // ✅ DELETE EXPENSE
     public static boolean deleteExpense(int expenseId) {
 
         String query = "DELETE FROM expenses WHERE expense_id = ?";

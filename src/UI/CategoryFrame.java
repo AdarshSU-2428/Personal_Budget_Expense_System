@@ -1,6 +1,6 @@
 package UI;
 
-import db.CategoryService;   // ✅ Correct package
+import db.CategoryService;   
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -39,7 +39,6 @@ public class CategoryFrame {
         panel.setBackground(BG);
         panel.setBorder(new EmptyBorder(25, 25, 25, 25));
 
-        // Header
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(BG);
 
@@ -59,11 +58,9 @@ public class CategoryFrame {
 
         headerPanel.add(titlePanel, BorderLayout.WEST);
 
-        // Content
         JPanel contentPanel = new JPanel(new GridLayout(1, 2, 20, 0));
         contentPanel.setBackground(BG);
 
-        // Left panel
         JPanel formPanel = new JPanel();
         formPanel.setBackground(WHITE);
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
@@ -96,7 +93,6 @@ public class CategoryFrame {
         formPanel.add(Box.createVerticalStrut(10));
         formPanel.add(deleteButton);
 
-        // Table
         String[] columns = {"ID", "Category Name"};
         tableModel = new DefaultTableModel(columns, 0) {
             public boolean isCellEditable(int row, int column) {
@@ -109,7 +105,7 @@ public class CategoryFrame {
 
         JScrollPane scrollPane = new JScrollPane(categoryTable);
 
-        loadCategoriesFromDB();   // ✅ load from database
+        loadCategoriesFromDB();   
 
         contentPanel.add(formPanel);
         contentPanel.add(scrollPane);
@@ -120,7 +116,6 @@ public class CategoryFrame {
         return panel;
     }
 
-    // Load categories from DB
     private void loadCategoriesFromDB() {
         tableModel.setRowCount(0);
 
@@ -131,7 +126,6 @@ public class CategoryFrame {
         }
     }
 
-    // Add category
     private void addCategory() {
         String name = categoryNameField.getText().trim();
 
@@ -149,7 +143,6 @@ public class CategoryFrame {
         }
     }
 
-    // Delete category
     private void deleteCategory() {
         int row = categoryTable.getSelectedRow();
 

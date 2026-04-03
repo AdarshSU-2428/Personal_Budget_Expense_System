@@ -15,7 +15,7 @@ public class VersionHistoryFrame {
     private JPanel mainPanel;
     private JTable historyTable;
     private DefaultTableModel tableModel;
-    private JPanel statsPanel; // ✅ made global
+    private JPanel statsPanel;
 
     private final Color BG = new Color(236, 240, 241);
     private final Color WHITE = Color.WHITE;
@@ -38,7 +38,6 @@ public class VersionHistoryFrame {
         panel.setBackground(BG);
         panel.setBorder(new EmptyBorder(25, 25, 25, 25));
 
-        // Header
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(BG);
 
@@ -60,7 +59,6 @@ public class VersionHistoryFrame {
 
         headerPanel.add(titlePanel, BorderLayout.WEST);
 
-        // Toolbar
         JPanel toolbarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         toolbarPanel.setBackground(BG);
 
@@ -76,7 +74,7 @@ public class VersionHistoryFrame {
         toolbarPanel.add(refreshButton);
         toolbarPanel.add(exportButton);
 
-        // Table
+
         String[] columns = {"Version ID", "Budget ID", "Category", "Month", "Year",
                 "Old Amount (Rs)", "New Amount (Rs)", "Change (Rs)", "Changed At"};
 
@@ -90,12 +88,10 @@ public class VersionHistoryFrame {
         JScrollPane scrollPane = new JScrollPane(historyTable);
         scrollPane.getViewport().setBackground(WHITE);
 
-        // Stats panel
         statsPanel = new JPanel(new GridLayout(1, 3, 15, 0));
         statsPanel.setBackground(BG);
         statsPanel.setPreferredSize(new Dimension(800, 75));
 
-        // Layout
         JPanel topSection = new JPanel(new BorderLayout(0, 10));
         topSection.setBackground(BG);
         topSection.add(headerPanel, BorderLayout.NORTH);
@@ -109,7 +105,6 @@ public class VersionHistoryFrame {
         panel.add(topSection, BorderLayout.NORTH);
         panel.add(centerPanel, BorderLayout.CENTER);
 
-        // ✅ LOAD DATA AT END (IMPORTANT FIX)
         loadSampleData();
 
         return panel;
@@ -132,7 +127,7 @@ public class VersionHistoryFrame {
             else if (change.startsWith("-")) decreases++;
         }
 
-        // update stats
+
         statsPanel.removeAll();
         statsPanel.add(createStatCard("Total Revisions", String.valueOf(list.size()), HISTORY_COLOR));
         statsPanel.add(createStatCard("Budget Increases", String.valueOf(increases), DANGER));

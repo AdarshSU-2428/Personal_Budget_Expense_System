@@ -28,7 +28,7 @@ public class Main {
 
                 System.out.println("Database Connected");
 
-                // Execute each statement individually
+                // Executes each statement individually
                 for (String statement : sql.split(";")) {
                     String trimmed = statement.trim();
                     if (!trimmed.isEmpty()) {

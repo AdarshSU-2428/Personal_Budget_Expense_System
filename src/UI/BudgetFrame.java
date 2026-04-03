@@ -67,7 +67,7 @@ public class BudgetFrame {
 
         headerPanel.add(titlePanel, BorderLayout.WEST);
 
-        // Form panel
+        // Form 
         JPanel formPanel = new JPanel();
         formPanel.setBackground(WHITE);
         formPanel.setLayout(new GridBagLayout());
@@ -80,13 +80,11 @@ public class BudgetFrame {
         gbc.insets = new Insets(8, 10, 8, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Row 1
         gbc.gridx = 0; gbc.gridy = 0;
         formPanel.add(createLabel("Category:"), gbc);
 
         gbc.gridx = 1;
 
-        // ✅ FIX: load from DB
         List<String> categories = CategoryService.getCategoryNamesByUser(userId);
         categoryCombo = new JComboBox<>(categories.toArray(new String[0]));
         categoryCombo.setFont(new Font("Segoe UI", Font.PLAIN, 13));
@@ -104,7 +102,6 @@ public class BudgetFrame {
         monthCombo.setPreferredSize(new Dimension(150, 32));
         formPanel.add(monthCombo, gbc);
 
-        // Row 2
         gbc.gridx = 0; gbc.gridy = 1;
         formPanel.add(createLabel("Year:"), gbc);
 
@@ -119,7 +116,6 @@ public class BudgetFrame {
         amountField = createFormTextField("");
         formPanel.add(amountField, gbc);
 
-        // Buttons
         gbc.gridx = 0; gbc.gridy = 2;
         gbc.gridwidth = 4;
         gbc.fill = GridBagConstraints.NONE;
@@ -145,7 +141,6 @@ public class BudgetFrame {
 
         formPanel.add(buttonPanel, gbc);
 
-        // Table
         String[] columns = {"ID", "Category", "Month", "Year", "Planned Amount (Rs)"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
@@ -156,20 +151,20 @@ public class BudgetFrame {
         styleTable(budgetTable);
 
         budgetTable.addMouseListener(new MouseAdapter() {
-    public void mouseClicked(MouseEvent e) {
-        int row = budgetTable.getSelectedRow();
-        if (row >= 0) {
-            categoryCombo.setSelectedItem(tableModel.getValueAt(row, 1).toString());
+            public void mouseClicked(MouseEvent e) {
+                int row = budgetTable.getSelectedRow();
+                if (row >= 0) {
+                    categoryCombo.setSelectedItem(tableModel.getValueAt(row, 1).toString());
 
-            // ✅ FIX: Month is STRING, not int
-            String monthVal = tableModel.getValueAt(row, 2).toString();
-            monthCombo.setSelectedItem(monthVal);
+                    String monthVal = tableModel.getValueAt(row, 2).toString();
+                    monthCombo.setSelectedItem(monthVal);
 
-            yearField.setText(tableModel.getValueAt(row, 3).toString());
-            amountField.setText(tableModel.getValueAt(row, 4).toString());
-        }
-    }
-    });
+                    yearField.setText(tableModel.getValueAt(row, 3).toString());
+                    amountField.setText(tableModel.getValueAt(row, 4).toString());
+                }
+            }
+        });
+
         JScrollPane scrollPane = new JScrollPane(budgetTable);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220)));
         scrollPane.getViewport().setBackground(WHITE);
@@ -187,8 +182,8 @@ public class BudgetFrame {
         panel.addComponentListener(new java.awt.event.ComponentAdapter() {
         @Override
         public void componentShown(java.awt.event.ComponentEvent e) {
-            refreshCategories();   // 🔥 reload combo
-            loadBudgetsFromDB();   // optional but recommended
+            refreshCategories();   
+            loadBudgetsFromDB();
         }
 });
 
@@ -239,7 +234,7 @@ public class BudgetFrame {
             String categoryName = categoryCombo.getSelectedItem().toString();
             int categoryId = CategoryService.getCategoryIdByName(userId,categoryName);
 
-            String month = monthCombo.getSelectedItem().toString(); // ✅ correct
+            String month = monthCombo.getSelectedItem().toString(); 
             int year = Integer.parseInt(yearField.getText().trim());
             double amount = Double.parseDouble(amountField.getText().trim());
 
@@ -256,7 +251,7 @@ public class BudgetFrame {
             }
 
         } catch (Exception e) {
-            e.printStackTrace(); // 🔥 IMPORTANT
+            e.printStackTrace(); 
             JOptionPane.showMessageDialog(mainPanel, "Error updating: " + e.getMessage());
         }
     }
@@ -348,18 +343,18 @@ public class BudgetFrame {
         }
     }
     private void refreshCategories() {
-    String selected = (String) categoryCombo.getSelectedItem();
+        String selected = (String) categoryCombo.getSelectedItem();
 
-    List<String> categories = CategoryService.getCategoryNamesByUser(userId);
+        List<String> categories = CategoryService.getCategoryNamesByUser(userId);
 
-    categoryCombo.removeAllItems();
+        categoryCombo.removeAllItems();
 
-    for (String cat : categories) {
-        categoryCombo.addItem(cat);
+        for (String cat : categories) {
+            categoryCombo.addItem(cat);
+        }
+
+        if (selected != null) {
+            categoryCombo.setSelectedItem(selected);
+        }
     }
-
-    if (selected != null) {
-        categoryCombo.setSelectedItem(selected);
-    }
-}
 }

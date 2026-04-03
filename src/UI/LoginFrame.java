@@ -81,7 +81,6 @@ public class LoginFrame extends JFrame {
         headerPanel.add(Box.createVerticalStrut(8));
         headerPanel.add(subtitleLabel);
 
-        // Form
         JPanel formPanel = new JPanel();
         formPanel.setBackground(WHITE);
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
@@ -132,7 +131,6 @@ public class LoginFrame extends JFrame {
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(BG_COLOR);
 
-        // Header
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(ACCENT);
         headerPanel.setPreferredSize(new Dimension(0, 120));
@@ -153,7 +151,6 @@ public class LoginFrame extends JFrame {
         headerPanel.add(Box.createVerticalStrut(8));
         headerPanel.add(subtitleLabel);
 
-        // Form
         JPanel formPanel = new JPanel();
         formPanel.setBackground(WHITE);
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
@@ -226,71 +223,71 @@ public class LoginFrame extends JFrame {
         });
 
         loginButton.addActionListener(e -> {
-    String email = loginEmailField.getText().trim();
-    String password = new String(loginPasswordField.getPassword()).trim();
+            String email = loginEmailField.getText().trim();
+            String password = new String(loginPasswordField.getPassword()).trim();
 
-    if (email.isEmpty() || password.isEmpty()) {
-        showError("Please fill in all fields.");
-        return;
-    }
+            if (email.isEmpty() || password.isEmpty()) {
+                showError("Please fill in all fields.");
+                return;
+            }
 
-    int userId = UserService.loginUser(email, password);
+            int userId = UserService.loginUser(email, password);
 
-    if (userId != -1) {
+            if (userId != -1) {
 
-        String username = UserService.getUsernameById(userId);
+                String username = UserService.getUsernameById(userId);
 
-        JOptionPane.showMessageDialog(this,
-                "Login successful! Welcome, " + username,
-                "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Login successful! Welcome, " + username,
+                        "Success", JOptionPane.INFORMATION_MESSAGE);
 
-        dispose();
-        new DashboardFrame(userId, username);
+                dispose();
+                new DashboardFrame(userId, username);
 
-    } else {
-        showError("Invalid email or password.");
-    }
-});
+            } else {
+                showError("Invalid email or password.");
+            }
+        });
 
         registerButton.addActionListener(e -> {
-    String name = regNameField.getText().trim();
-    String email = regEmailField.getText().trim();
-    String pass = new String(regPasswordField.getPassword()).trim();
-    String confirm = new String(regConfirmPasswordField.getPassword()).trim();
+            String name = regNameField.getText().trim();
+            String email = regEmailField.getText().trim();
+            String pass = new String(regPasswordField.getPassword()).trim();
+            String confirm = new String(regConfirmPasswordField.getPassword()).trim();
 
-    if (name.isEmpty() || email.isEmpty() || pass.isEmpty() || confirm.isEmpty()) {
-        showError("Please fill in all fields.");
-        return;
-    }
+            if (name.isEmpty() || email.isEmpty() || pass.isEmpty() || confirm.isEmpty()) {
+                showError("Please fill in all fields.");
+                return;
+            }
 
-    if (!email.contains("@")) {
-        showError("Please enter a valid email address.");
-        return;
-    }
+            if (!email.contains("@")) {
+                showError("Please enter a valid email address.");
+                return;
+            }
 
-    if (pass.length() < 6) {
-        showError("Password must be at least 6 characters.");
-        return;
-    }
+            if (pass.length() < 6) {
+                showError("Password must be at least 6 characters.");
+                return;
+            }
 
-    if (!pass.equals(confirm)) {
-        showError("Passwords do not match.");
-        return;
-    }
+            if (!pass.equals(confirm)) {
+                showError("Passwords do not match.");
+                return;
+            }
 
-    boolean success = UserService.registerUser(name, email, pass);
+            boolean success = UserService.registerUser(name, email, pass);
 
-    if (success) {
-        JOptionPane.showMessageDialog(this,
-                "Registration successful! Please sign in.",
-                "Success", JOptionPane.INFORMATION_MESSAGE);
+            if (success) {
+                JOptionPane.showMessageDialog(this,
+                        "Registration successful! Please sign in.",
+                        "Success", JOptionPane.INFORMATION_MESSAGE);
 
-        cardLayout.show(cardPanel, "LOGIN");
+                cardLayout.show(cardPanel, "LOGIN");
 
-    } else {
-        showError("Registration failed (Email/Username may already exist)");
-    }
-});
+            } else {
+                showError("Registration failed (Email/Username may already exist)");
+            }
+        });
     }
 
     private JLabel createFieldLabel(String text) {

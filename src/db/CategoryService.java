@@ -6,7 +6,6 @@ import java.util.List;
 
 public class CategoryService {
 
-    // ✅ GET ALL (ID + NAME)
     public static List<Object[]> getCategories(int userId) {
         List<Object[]> list = new ArrayList<>();
 
@@ -54,7 +53,7 @@ public class CategoryService {
 
         return list;
     }
-    // ✅ ADD CATEGORY
+
     public static boolean addCategory(int userId, String name) {
         String query = "INSERT INTO expense_categories (user_id, category_name, created_at) VALUES (?, ?, NOW())";
 
@@ -71,7 +70,6 @@ public class CategoryService {
         }
     }
 
-    // ✅ DELETE CATEGORY
     public static boolean deleteCategory(int id) {
         String query = "DELETE FROM expense_categories WHERE category_id = ?";
 
@@ -87,7 +85,6 @@ public class CategoryService {
         }
     }
 
-    // ✅ GET CATEGORY ID BY NAME (VERY IMPORTANT)
     public static int getCategoryIdByName(int userId, String name) {
         String query = "SELECT category_id FROM expense_categories WHERE user_id = ? AND category_name = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -108,11 +105,9 @@ public class CategoryService {
         return -1;
     }
 
-    // ✅ REQUIRED FUNCTION (FIX FOR YOUR ERROR)
     public static List<String> getCategoryNameById(int userId) {
         List<String> list = new ArrayList<>();
 
-        // ⚠️ Your table has no user_id, so we fetch all
         String query = "SELECT category_name FROM expense_categories";
 
         try (Connection conn = DBConnection.getConnection();

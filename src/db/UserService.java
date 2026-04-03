@@ -4,7 +4,6 @@ import java.sql.*;
 
 public class UserService {
 
-    // ✅ REGISTER USER
     public static boolean registerUser(String username, String email, String password) {
 
         String query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
@@ -20,12 +19,10 @@ public class UserService {
             return rows > 0;
 
         } catch (SQLException e) {
-
-            // 🔥 HANDLE UNIQUE ERRORS (EMAIL / USERNAME)
             if (e.getMessage().contains("users_email_key")) {
-                System.out.println("❌ Email already exists");
+                System.out.println("Email already exists");
             } else if (e.getMessage().contains("users_username_key")) {
-                System.out.println("❌ Username already exists");
+                System.out.println("Username already exists");
             } else {
                 e.printStackTrace();
             }
@@ -34,7 +31,6 @@ public class UserService {
         }
     }
 
-    // ✅ LOGIN USER (EMAIL + PASSWORD)
     public static int loginUser(String email, String password) {
 
         String query = "SELECT user_id FROM users WHERE email = ? AND password = ?";
@@ -56,10 +52,9 @@ public class UserService {
             e.printStackTrace();
         }
 
-        return -1; // ❌ invalid login
+        return -1; 
     }
 
-    // ✅ GET USERNAME BY ID (IMPORTANT FOR DASHBOARD)
     public static String getUsernameById(int userId) {
 
         String query = "SELECT username FROM users WHERE user_id = ?";

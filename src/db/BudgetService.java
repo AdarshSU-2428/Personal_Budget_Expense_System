@@ -6,7 +6,6 @@ import java.util.List;
 
 public class BudgetService {
 
-    // ✅ GET ALL BUDGETS (WITH CATEGORY NAME)
     public static List<Object[]> getBudgets(int userId) {
         List<Object[]> list = new ArrayList<>();
 
@@ -40,7 +39,6 @@ public class BudgetService {
         return list;
     }
 
-    // ✅ ADD BUDGET
     public static boolean addBudget(int userId, int categoryId, String month, int year, double amount) {
         try (Connection conn = DBConnection.getConnection()) {
 
@@ -64,7 +62,6 @@ public class BudgetService {
         }
     }
 
-    // ✅ UPDATE BUDGET
     public static boolean updateBudget(int id, int categoryId, String month, int year, double amount) {
         try (Connection conn = DBConnection.getConnection()) {
 
@@ -88,7 +85,6 @@ public class BudgetService {
         }
     }
 
-    // ✅ DELETE BUDGET
     public static boolean deleteBudget(int id) {
         try (Connection conn = DBConnection.getConnection()) {
 
@@ -105,66 +101,64 @@ public class BudgetService {
             return false;
         }
     }
-    // ✅ GET VERSION HISTORY (USING budget_versions TABLE)
-public static List<Object[]> getVersionHistory(int userId) {
-    List<Object[]> list = new ArrayList<>();
 
-    String query =
-            "SELECT v.version_id, v.budget_id, c.category_name, " +
-            "b.month, b.year, " +
-            "prev.planned_amount AS old_amount, " +
-            "v.planned_amount AS new_amount, " +
-            "v.changed_at " +
-            "FROM budget_versions v " +
+    public static List<Object[]> getVersionHistory(int userId) {
+        List<Object[]> list = new ArrayList<>();
 
-            // previous version join
-            "LEFT JOIN budget_versions prev " +
-            "ON v.budget_id = prev.budget_id " +
-            "AND v.version_number = prev.version_number + 1 " +
+        String query =
+                "SELECT v.version_id, v.budget_id, c.category_name, " +
+                "b.month, b.year, " +
+                "prev.planned_amount AS old_amount, " +
+                "v.planned_amount AS new_amount, " +
+                "v.changed_at " +
+                "FROM budget_versions v " +
 
-            // joins
-            "JOIN budgets b ON v.budget_id = b.budget_id " +
-            "JOIN expense_categories c ON v.category_id = c.category_id " +
+                "LEFT JOIN budget_versions prev " +
+                "ON v.budget_id = prev.budget_id " +
+                "AND v.version_number = prev.version_number + 1 " +
 
-            "WHERE b.user_id = ? " +
-            "ORDER BY v.changed_at DESC";
+                "JOIN budgets b ON v.budget_id = b.budget_id " +
+                "JOIN expense_categories c ON v.category_id = c.category_id " +
 
-    try (Connection conn = DBConnection.getConnection();
-         PreparedStatement ps = conn.prepareStatement(query)) {
+                "WHERE b.user_id = ? " +
+                "ORDER BY v.changed_at DESC";
 
-        ps.setInt(1, userId);
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query)) {
 
-        ResultSet rs = ps.executeQuery();
+            ps.setInt(1, userId);
 
-        while (rs.next()) {
+            ResultSet rs = ps.executeQuery();
 
-            double oldAmt = rs.getDouble("old_amount");
-            double newAmt = rs.getDouble("new_amount");
+            while (rs.next()) {
 
-            if (rs.wasNull()) oldAmt = 0; // first version case
+                double oldAmt = rs.getDouble("old_amount");
+                double newAmt = rs.getDouble("new_amount");
 
-            double change = newAmt - oldAmt;
+                if (rs.wasNull()) oldAmt = 0; // first version case
 
-            String changeStr = (change >= 0 ? "+" : "") + String.format("%.2f", change);
+                double change = newAmt - oldAmt;
 
-            list.add(new Object[]{
-                    rs.getInt("version_id"),
-                    rs.getInt("budget_id"),
-                    rs.getString("category_name"),
-                    rs.getString("month"),
-                    rs.getInt("year"),
-                    String.format("%.2f", oldAmt),
-                    String.format("%.2f", newAmt),
-                    changeStr,
-                    rs.getTimestamp("changed_at").toString()
-            });
+                String changeStr = (change >= 0 ? "+" : "") + String.format("%.2f", change);
+
+                list.add(new Object[]{
+                        rs.getInt("version_id"),
+                        rs.getInt("budget_id"),
+                        rs.getString("category_name"),
+                        rs.getString("month"),
+                        rs.getInt("year"),
+                        String.format("%.2f", oldAmt),
+                        String.format("%.2f", newAmt),
+                        changeStr,
+                        rs.getTimestamp("changed_at").toString()
+                });
+            }
+
+        } catch (Exception e) {
+            System.out.println("VERSION HISTORY ERROR:");
+            e.printStackTrace();
         }
 
-    } catch (Exception e) {
-        System.out.println("VERSION HISTORY ERROR:");
-        e.printStackTrace();
+        return list;
     }
-
-    return list;
-}
 }

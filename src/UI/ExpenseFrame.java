@@ -47,7 +47,6 @@ public class ExpenseFrame {
         panel.setBackground(BG);
         panel.setBorder(new EmptyBorder(25, 25, 25, 25));
 
-        // HEADER
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(BG);
 
@@ -68,7 +67,7 @@ public class ExpenseFrame {
 
         headerPanel.add(titlePanel, BorderLayout.WEST);
 
-        // FORM PANEL
+
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBackground(WHITE);
         formPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -80,7 +79,6 @@ public class ExpenseFrame {
         gbc.insets = new Insets(8, 10, 8, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // ROW 1
         gbc.gridx = 0; gbc.gridy = 0;
         formPanel.add(createLabel("Category:"), gbc);
 
@@ -97,7 +95,6 @@ public class ExpenseFrame {
         amountField = createFormTextField("");
         formPanel.add(amountField, gbc);
 
-        // ROW 2
         gbc.gridx = 0; gbc.gridy = 1;
         formPanel.add(createLabel("Date (YYYY-MM-DD):"), gbc);
 
@@ -112,7 +109,6 @@ public class ExpenseFrame {
         descriptionField = createFormTextField("");
         formPanel.add(descriptionField, gbc);
 
-        // BUTTONS
         gbc.gridx = 0; gbc.gridy = 2;
         gbc.gridwidth = 4;
         gbc.anchor = GridBagConstraints.CENTER;
@@ -134,7 +130,6 @@ public class ExpenseFrame {
 
         formPanel.add(buttonPanel, gbc);
 
-        // TABLE
         tableModel = new DefaultTableModel(
                 new String[]{"ID", "Category", "Amount (Rs)", "Date", "Description"}, 0);
 
@@ -156,7 +151,6 @@ public class ExpenseFrame {
         JScrollPane scrollPane = new JScrollPane(expenseTable);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220)));
 
-        // TOTAL PANEL
         JPanel totalPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         totalPanel.setBackground(BG);
 
@@ -180,8 +174,6 @@ public class ExpenseFrame {
 
         return panel;
     }
-
-    // ===== LOGIC (UNCHANGED) =====
 
     private void loadExpensesFromDB() {
         tableModel.setRowCount(0);
@@ -237,8 +229,6 @@ public class ExpenseFrame {
         }
         totalLabel.setText("Total Expenses: Rs. " + total);
     }
-
-    // ===== UI HELPERS =====
 
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);

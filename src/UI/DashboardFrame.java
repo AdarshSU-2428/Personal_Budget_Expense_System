@@ -71,7 +71,6 @@ public class DashboardFrame extends JFrame {
         sidebar.add(profilePanel);
         sidebar.add(Box.createVerticalStrut(20));
 
-        // Navigation buttons
         String[][] menuItems = {
                 {"Home", "HOME"},
                 {"Manage Budget", "BUDGET"},
@@ -89,7 +88,6 @@ public class DashboardFrame extends JFrame {
 
         sidebar.add(Box.createVerticalGlue());
 
-        // Logout button
         JButton logoutBtn = new JButton("  Logout");
         logoutBtn.setActionCommand("LOGOUT");
         logoutBtn.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -170,7 +168,6 @@ public class DashboardFrame extends JFrame {
         homePanel.setBackground(CONTENT_BG);
         homePanel.setBorder(new EmptyBorder(30, 30, 30, 30));
 
-        // Welcome header
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(CONTENT_BG);
         headerPanel.setBorder(new EmptyBorder(0, 0, 25, 0));
@@ -186,7 +183,6 @@ public class DashboardFrame extends JFrame {
         headerPanel.add(welcomeLabel, BorderLayout.NORTH);
         headerPanel.add(dateLabel, BorderLayout.SOUTH);
 
-        // Summary cards
         JPanel cardsPanel = new JPanel(new GridLayout(1, 4, 20, 0));
         cardsPanel.setBackground(CONTENT_BG);
         cardsPanel.setPreferredSize(new Dimension(800, 140));
@@ -201,7 +197,6 @@ public class DashboardFrame extends JFrame {
         cardsPanel.add(createSummaryCard("Remaining", "Rs. " + remaining, "SAVINGS", new Color(46, 204, 113)));
         cardsPanel.add(createSummaryCard("Categories", String.valueOf(categories), "CATEGORY", new Color(155, 89, 182)));
 
-        // Quick actions
         JPanel actionsTitlePanel = new JPanel(new BorderLayout());
         actionsTitlePanel.setBackground(CONTENT_BG);
         actionsTitlePanel.setBorder(new EmptyBorder(25, 0, 15, 0));
@@ -308,18 +303,19 @@ public class DashboardFrame extends JFrame {
             contentCardLayout.show(contentPanel, command);
         }
     }
+
     private double getTotalBudget() {
-    double total = 0;
-    try {
-        java.util.List<Object[]> list = db.BudgetService.getBudgets(userId);
-        for (Object[] row : list) {
-            total += Double.parseDouble(row[4].toString()); // total_amount
+        double total = 0;
+        try {
+            java.util.List<Object[]> list = db.BudgetService.getBudgets(userId);
+            for (Object[] row : list) {
+                total += Double.parseDouble(row[4].toString()); // total_amount
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return total;
     }
-    return total;
-}
 
     private double getTotalExpenses() {
         double total = 0;
@@ -342,6 +338,7 @@ public class DashboardFrame extends JFrame {
         }
         return 0;
     }
+    
     private void refreshHomePanel() {
         contentPanel.remove(contentPanel.getComponent(0)); // remove old HOME
         contentPanel.add(createHomePanel(), "HOME");       // add new updated HOME

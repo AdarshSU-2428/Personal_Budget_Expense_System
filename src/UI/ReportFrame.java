@@ -43,7 +43,6 @@ public class ReportFrame {
         panel.setBackground(BG);
         panel.setBorder(new EmptyBorder(25, 25, 25, 25));
 
-        // Header
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(BG);
 
@@ -64,7 +63,6 @@ public class ReportFrame {
 
         headerPanel.add(titlePanel, BorderLayout.WEST);
 
-        // Filter panel
         JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));
         filterPanel.setBackground(WHITE);
         filterPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -105,7 +103,6 @@ public class ReportFrame {
         filterPanel.add(Box.createHorizontalStrut(20));
         filterPanel.add(generateButton);
 
-        // Table
         String[] columns = {"Category", "Planned (Rs)", "Actual (Rs)", "Difference (Rs)", "Status"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
@@ -119,7 +116,6 @@ public class ReportFrame {
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220)));
         scrollPane.getViewport().setBackground(WHITE);
 
-        // Summary panel
         JPanel summaryPanel = new JPanel(new GridLayout(1, 3, 20, 0));
         summaryPanel.setBackground(BG);
         summaryPanel.setPreferredSize(new Dimension(800, 80));
@@ -140,7 +136,6 @@ public class ReportFrame {
         summaryPanel.add(createSummaryCard("Total Actual", totalActualLabel));
         summaryPanel.add(createSummaryCard("Net Savings", totalSavingsLabel));
 
-        // Load default report
         generateReport();
 
         panel.add(headerPanel, BorderLayout.NORTH);
@@ -157,27 +152,27 @@ public class ReportFrame {
     }
 
     private void generateReport() {
-    tableModel.setRowCount(0);
+        tableModel.setRowCount(0);
 
-    String month = monthCombo.getSelectedItem().toString();
-    int year = Integer.parseInt(yearField.getText());
+        String month = monthCombo.getSelectedItem().toString();
+        int year = Integer.parseInt(yearField.getText());
 
-    double totalPlanned = 0;
-    double totalActual = 0;
+        double totalPlanned = 0;
+        double totalActual = 0;
 
-    java.util.List<Object[]> list = db.ReportService.getMonthlyReport(userId, month, year);
+        java.util.List<Object[]> list = db.ReportService.getMonthlyReport(userId, month, year);
 
-    for (Object[] row : list) {
-        tableModel.addRow(row);
+        for (Object[] row : list) {
+            tableModel.addRow(row);
 
-        totalPlanned += Double.parseDouble(row[1].toString());
-        totalActual += Double.parseDouble(row[2].toString());
+            totalPlanned += Double.parseDouble(row[1].toString());
+            totalActual += Double.parseDouble(row[2].toString());
+        }
+
+        totalPlannedLabel.setText("Rs. " + String.format("%.2f", totalPlanned));
+        totalActualLabel.setText("Rs. " + String.format("%.2f", totalActual));
+        totalSavingsLabel.setText("Rs. " + String.format("%.2f", (totalPlanned - totalActual)));
     }
-
-    totalPlannedLabel.setText("Rs. " + String.format("%.2f", totalPlanned));
-    totalActualLabel.setText("Rs. " + String.format("%.2f", totalActual));
-    totalSavingsLabel.setText("Rs. " + String.format("%.2f", (totalPlanned - totalActual)));
-}
 
     private JPanel createSummaryCard(String title, JLabel valueLabel) {
         JPanel card = new JPanel(new BorderLayout());
@@ -213,7 +208,6 @@ public class ReportFrame {
         header.setPreferredSize(new Dimension(header.getWidth(), 42));
         header.setReorderingAllowed(false);
 
-        // Custom renderer for status column
         table.getColumnModel().getColumn(4).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
