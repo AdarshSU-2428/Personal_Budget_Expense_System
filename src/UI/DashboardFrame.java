@@ -46,7 +46,6 @@ public class DashboardFrame extends JFrame {
         sidebar.setPreferredSize(new Dimension(240, 700));
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
 
-        // User profile section
         JPanel profilePanel = new JPanel();
         profilePanel.setBackground(new Color(34, 49, 63));
         profilePanel.setLayout(new BoxLayout(profilePanel, BoxLayout.Y_AXIS));
