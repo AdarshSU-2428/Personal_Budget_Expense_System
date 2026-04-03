@@ -46,7 +46,6 @@ public class BudgetFrame {
         panel.setBackground(BG);
         panel.setBorder(new EmptyBorder(25, 25, 25, 25));
 
-        // Header
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(BG);
 
@@ -67,7 +66,7 @@ public class BudgetFrame {
 
         headerPanel.add(titlePanel, BorderLayout.WEST);
 
-        // Form 
+
         JPanel formPanel = new JPanel();
         formPanel.setBackground(WHITE);
         formPanel.setLayout(new GridBagLayout());
@@ -180,12 +179,12 @@ public class BudgetFrame {
 
         panel.add(centerPanel, BorderLayout.CENTER);
         panel.addComponentListener(new java.awt.event.ComponentAdapter() {
-        @Override
-        public void componentShown(java.awt.event.ComponentEvent e) {
-            refreshCategories();   
-            loadBudgetsFromDB();
-        }
-});
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e) {
+                refreshCategories();   
+                loadBudgetsFromDB();
+            }
+        });
 
         return panel;
     }
