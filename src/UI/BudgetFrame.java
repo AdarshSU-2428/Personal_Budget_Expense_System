@@ -106,7 +106,7 @@ public class BudgetFrame {
         formPanel.add(createLabel("Year:"), gbc);
 
         gbc.gridx = 1;
-        yearField = createFormTextField("2025");
+        yearField = createFormTextField("2026");
         formPanel.add(yearField, gbc);
 
         gbc.gridx = 2;
