@@ -21,6 +21,7 @@ public class DashboardFrame extends JFrame {
 
     private JPanel contentPanel;
     private CardLayout contentCardLayout;
+    private JPanel homePanel;
 
     public DashboardFrame(int userId, String userName) {
         this.userId = userId;
@@ -150,7 +151,9 @@ public class DashboardFrame extends JFrame {
         contentPanel = new JPanel(contentCardLayout);
         contentPanel.setBackground(CONTENT_BG);
 
-        contentPanel.add(createHomePanel(), "HOME");
+        homePanel = createHomePanel();  
+        contentPanel.add(homePanel, "HOME");
+
         contentPanel.add(new BudgetFrame(userId).getMainPanel(), "BUDGET");
         contentPanel.add(new ExpenseFrame(userId).getMainPanel(), "EXPENSE");
         contentPanel.add(new CategoryFrame(userId).getMainPanel(), "CATEGORY");
@@ -297,9 +300,11 @@ public class DashboardFrame extends JFrame {
             }
         } else {
             if ("HOME".equals(command)) {
-            refreshHomePanel(); 
+                refreshHomePanel(); 
             }
             contentCardLayout.show(contentPanel, command);
+            contentPanel.revalidate();
+            contentPanel.repaint();
         }
     }
 
@@ -339,7 +344,11 @@ public class DashboardFrame extends JFrame {
     }
     
     private void refreshHomePanel() {
-        contentPanel.remove(contentPanel.getComponent(0)); 
-        contentPanel.add(createHomePanel(), "HOME");       
+        contentPanel.remove(homePanel);      
+        homePanel = createHomePanel();         
+        contentPanel.add(homePanel, "HOME");  
+        contentCardLayout.show(contentPanel, "HOME");
+        contentPanel.revalidate();             
+        contentPanel.repaint();
     }
 }

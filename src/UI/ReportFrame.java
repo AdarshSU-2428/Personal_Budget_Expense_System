@@ -84,7 +84,7 @@ public class ReportFrame {
         yearLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
         yearLabel.setForeground(TEXT_DARK);
 
-        yearField = new JTextField("2025");
+        yearField = new JTextField("2026");
         yearField.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         yearField.setPreferredSize(new Dimension(80, 32));
         yearField.setBorder(BorderFactory.createCompoundBorder(

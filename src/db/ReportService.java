@@ -28,7 +28,8 @@ public class ReportService {
                 AND e.user_id = ?
                 AND EXTRACT(MONTH FROM e.expense_date) = ?
                 AND EXTRACT(YEAR FROM e.expense_date) = ?
-
+            
+            WHERE c.user_id = ?
             GROUP BY c.category_id, c.category_name
             ORDER BY c.category_name
         """;
@@ -43,7 +44,7 @@ public class ReportService {
             ps.setInt(4, userId);
             ps.setInt(5, getMonthNumber(month)); // convert month name → number
             ps.setInt(6, year);
-
+            ps.setInt(7, userId);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {

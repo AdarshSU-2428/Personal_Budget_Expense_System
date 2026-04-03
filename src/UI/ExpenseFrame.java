@@ -99,7 +99,7 @@ public class ExpenseFrame {
         formPanel.add(createLabel("Date (YYYY-MM-DD):"), gbc);
 
         gbc.gridx = 1;
-        dateField = createFormTextField("2025-01-15");
+        dateField = createFormTextField("2026-01-01");
         formPanel.add(dateField, gbc);
 
         gbc.gridx = 2;
@@ -171,6 +171,13 @@ public class ExpenseFrame {
         centerPanel.add(totalPanel, BorderLayout.SOUTH);
 
         panel.add(centerPanel, BorderLayout.CENTER);
+        panel.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e) {
+                refreshCategories();   
+                loadExpensesFromDB();    
+            }
+        });
 
         return panel;
     }
@@ -219,7 +226,7 @@ public class ExpenseFrame {
     private void clearForm() {
         amountField.setText("");
         descriptionField.setText("");
-        dateField.setText("2025-01-15");
+        dateField.setText("2026-01-01");
     }
 
     private void recalculateTotal() {
@@ -280,6 +287,21 @@ public class ExpenseFrame {
         center.setHorizontalAlignment(JLabel.CENTER);
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(center);
+        }
+    }
+    private void refreshCategories() {
+        String selected = (String) categoryCombo.getSelectedItem();
+
+        List<String> categories = CategoryService.getCategoryNamesByUser(userId);
+
+        categoryCombo.removeAllItems();
+
+        for (String cat : categories) {
+            categoryCombo.addItem(cat);
+        }
+
+        if (selected != null) {
+            categoryCombo.setSelectedItem(selected);
         }
     }
 }
