@@ -340,7 +340,7 @@ public class DashboardFrame extends JFrame {
     }
     
     private void refreshHomePanel() {
-        contentPanel.remove(contentPanel.getComponent(0)); // remove old HOME
-        contentPanel.add(createHomePanel(), "HOME");       // add new updated HOME
+        contentPanel.remove(contentPanel.getComponent(0)); 
+        contentPanel.add(createHomePanel(), "HOME");       
     }
 }
