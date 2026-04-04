@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS USERS (
 -- EXPENSE CATEGORIES TABLE
 CREATE TABLE IF NOT EXISTS EXPENSE_CATEGORIES (
     category_id SERIAL PRIMARY KEY,
-    user_id INT,  -- 🔥 IMPORTANT: categories should belong to a user
+    user_id INT, 
     category_name VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS EXPENSE_CATEGORIES (
 CREATE TABLE IF NOT EXISTS BUDGETS (
     budget_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
-    month INT NOT NULL,   -- 🔥 FIX: use INT instead of VARCHAR
+    month INT NOT NULL,   
     year INT NOT NULL,
     total_amount DECIMAL(10,2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
