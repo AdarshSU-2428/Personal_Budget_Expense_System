@@ -15,7 +15,7 @@ public class ReportService {
                 c.category_name,
                 COALESCE(MAX(b.total_amount), 0) AS planned,
                 COALESCE(SUM(e.amount), 0) AS actual
-            FROM expense_categories c
+                FROM expense_categories c
 
             LEFT JOIN budgets b 
                 ON c.category_id = b.category_id
