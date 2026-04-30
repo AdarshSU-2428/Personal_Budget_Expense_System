@@ -40,8 +40,7 @@ public class ExpenseService {
         return list;
     }
 
-    public static boolean addExpense(int userId, int categoryId,
-                                    double amount, Date date, String description) {
+    public static boolean addExpense(int userId, int categoryId, double amount, Date date, String description) throws Exception {
 
         String query = "INSERT INTO expenses (user_id, category_id, amount, expense_date, description) " +
                        "VALUES (?, ?, ?, ?, ?)";
@@ -60,12 +59,11 @@ public class ExpenseService {
         } catch (Exception e) {
             System.out.println("ADD EXPENSE ERROR:");
             e.printStackTrace();
-            return false;
+            throw e;
         }
     }
 
-    public static boolean updateExpense(int expenseId, int categoryId,
-                                        double amount, Date date, String description) {
+    public static boolean updateExpense(int expenseId, int categoryId, double amount, Date date, String description) throws Exception {
 
         String query = "UPDATE expenses SET category_id = ?, amount = ?, expense_date = ?, description = ? " +
                        "WHERE expense_id = ?";
@@ -84,7 +82,7 @@ public class ExpenseService {
         } catch (Exception e) {
             System.out.println("UPDATE EXPENSE ERROR:");
             e.printStackTrace();
-            return false;
+            throw e;
         }
     }
 

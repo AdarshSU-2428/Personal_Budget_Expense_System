@@ -193,21 +193,54 @@ public class ExpenseFrame {
 
     private void addExpense() {
         try {
-            double amount = Double.parseDouble(amountField.getText());
+            if (amountField.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(mainPanel,
+                        "Amount cannot be empty",
+                        "Input Error",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            double amount = Double.parseDouble(amountField.getText().trim());
+
+            if (amount <= 0) {
+                JOptionPane.showMessageDialog(mainPanel,
+                        "Expense must be greater than 0",
+                        "Invalid Expense",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             String categoryName = categoryCombo.getSelectedItem().toString();
             int categoryId = CategoryService.getCategoryIdByName(userId,categoryName);
 
             Date date = Date.valueOf(dateField.getText());
             String desc = descriptionField.getText();
 
-            if (ExpenseService.addExpense(userId, categoryId, amount, date, desc)) {
+            boolean success = ExpenseService.addExpense(userId, categoryId, amount, date, desc);
+
+            if (success) {
                 JOptionPane.showMessageDialog(mainPanel, "Added!");
                 loadExpensesFromDB();
                 clearForm();
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(mainPanel, "Error: " + e.getMessage());
+            String msg = e.getMessage().toLowerCase();
+
+            if (msg.contains("check") || msg.contains("constraint")) {
+                JOptionPane.showMessageDialog(mainPanel,
+                        "Expense must be greater than 0!",
+                        "Constraint Error",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(mainPanel,
+                        "Error: " + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+            e.printStackTrace();
         }
     }
 

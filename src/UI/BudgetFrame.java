@@ -206,6 +206,14 @@ public class BudgetFrame {
             int year = Integer.parseInt(yearField.getText().trim());
             double amount = Double.parseDouble(amountField.getText().trim());
 
+            if (amount < 500) {
+                JOptionPane.showMessageDialog(mainPanel,
+                        "Budget must be at least Rs. 500",
+                        "Invalid Budget",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             boolean success = BudgetService.addBudget(userId, categoryId, month, year, amount);
 
             if (success) {
@@ -215,7 +223,21 @@ public class BudgetFrame {
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(mainPanel, "Invalid input");
+            String msg = e.getMessage().toLowerCase();
+
+            if (msg.contains("check") || msg.contains("constraint")) {
+                JOptionPane.showMessageDialog(mainPanel,
+                        "Budget is below allowed limit!",
+                        "Budget Error",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(mainPanel,
+                        "Invalid input or error:\n" + e.getMessage(),
+                        "Input Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+            e.printStackTrace();
         }
     }
 
@@ -235,7 +257,24 @@ public class BudgetFrame {
 
             String month = monthCombo.getSelectedItem().toString(); 
             int year = Integer.parseInt(yearField.getText().trim());
+
+            if (amountField.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(mainPanel,
+                        "Amount cannot be empty",
+                        "Input Error",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             double amount = Double.parseDouble(amountField.getText().trim());
+
+            if (amount < 500) {
+                JOptionPane.showMessageDialog(mainPanel,
+                        "Budget must be at least Rs. 500",
+                        "Invalid Budget",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             System.out.println("Updating ID: " + id); 
 
@@ -245,13 +284,25 @@ public class BudgetFrame {
                 JOptionPane.showMessageDialog(mainPanel, "Updated!");
                 loadBudgetsFromDB();
                 clearForm();
+            }
+        } 
+
+        catch (Exception e) {
+            String msg = e.getMessage().toLowerCase();
+
+            if (msg.contains("check") || msg.contains("constraint")) {
+                JOptionPane.showMessageDialog(mainPanel,
+                        "Budget is below allowed limit!",
+                        "Constraint Error",
+                        JOptionPane.ERROR_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(mainPanel, "Update failed!");
+                JOptionPane.showMessageDialog(mainPanel,
+                        "Error updating:\n" + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
 
-        } catch (Exception e) {
-            e.printStackTrace(); 
-            JOptionPane.showMessageDialog(mainPanel, "Error updating: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

@@ -39,7 +39,7 @@ public class BudgetService {
         return list;
     }
 
-    public static boolean addBudget(int userId, int categoryId, String month, int year, double amount) {
+    public static boolean addBudget(int userId, int categoryId, String month, int year, double amount) throws Exception {
         try (Connection conn = DBConnection.getConnection()) {
 
             String sql = "INSERT INTO budgets (user_id, category_id, month, year, total_amount) " +
@@ -58,11 +58,11 @@ public class BudgetService {
 
         } catch (Exception e) {
             System.out.println("Error adding budget: " + e.getMessage());
-            return false;
+            throw e;
         }
     }
 
-    public static boolean updateBudget(int id, int categoryId, String month, int year, double amount) {
+    public static boolean updateBudget(int id, int categoryId, String month, int year, double amount) throws Exception {
         try (Connection conn = DBConnection.getConnection()) {
 
             String sql = "UPDATE budgets SET category_id=?, month=?, year=?, total_amount=? " +
@@ -81,7 +81,7 @@ public class BudgetService {
 
         } catch (Exception e) {
             System.out.println("Error updating budget: " + e.getMessage());
-            return false;
+            throw e;
         }
     }
 
