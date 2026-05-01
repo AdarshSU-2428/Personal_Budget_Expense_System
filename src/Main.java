@@ -9,9 +9,7 @@ import javax.swing.*;
 import UI.LoginFrame;
 
 public class Main {
-
     public static void main(String[] args) {
-
         try (InputStream is = Main.class.getClassLoader()
                                         .getResourceAsStream("db/schema.sql")) {
 
@@ -22,7 +20,7 @@ public class Main {
             // Read schema.sql from classpath
             String sql = new String(is.readAllBytes(), StandardCharsets.UTF_8);
 
-            // Connect to database
+            // Connects to database
             try (Connection conn = DBConnection.getConnection();
                  Statement stmt = conn.createStatement()) {
 
